@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <property>
+        <name>tez.lib.uris</name>
+        <value>/user/tez/tez.tar.gz</value>
+    </property>
+    <property>
+        <name>dfs.client.datanode-restart.timeout</name>
+        <value>30</value>
+    </property>
+    <!--property>
+        <name>tez.am.launch.cmd-opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=7070</value>
+    </property-->
+    <!--property>
+        <name>tez.task.launch.cmd-opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=7979</value>
+    </property-->
+</configuration>
