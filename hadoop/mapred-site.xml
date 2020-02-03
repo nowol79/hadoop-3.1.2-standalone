@@ -25,4 +25,23 @@
         <name>mapreduce.application.classpath</name>
         <value>$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*</value>
     </property>
+    <!-- AM 디버깅 옵션 -->
+    <property>
+        <name>yarn.app.mapreduce.am.command-opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=7070</value>
+    </property>
+
+    <!-- Child 디버깅 옵션 -->
+    <property>
+        <name>mapred.child.java.opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5432</value>
+    </property>
+    <property>
+        <name>mapreduce.admin.reduce.child.java.opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5432</value>
+    </property>
+    <property>
+        <name>mapreduce.admin.map.child.java.opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5433</value>
+    </property>
 </configuration>

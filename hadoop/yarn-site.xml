@@ -22,15 +22,15 @@
         <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
     </property>
     <property>
-        <name>yarn.resourcemanager.address</name>
-        <value>127.0.0.1:8032</value>
-    </property>
-    <property>
         <name>yarn.resourcemanager.scheduler.address</name>
-        <value>127.0.0.1:8030</value>
+        <value>0.0.0.0:8030</value>
     </property>
     <property>
         <name>yarn.resourcemanager.resource-tracker.address</name>
-        <value>127.0.0.1:8031</value>
+        <value>0.0.0.0:8031</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>0.0.0.0:8032</value>
     </property>
 </configuration>

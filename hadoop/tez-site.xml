@@ -10,6 +10,16 @@
         <name>dfs.client.datanode-restart.timeout</name>
         <value>30</value>
     </property>
+    <!-- AM 디버깅 옵션 -->
+    <property>
+        <name>tez.am.launch.cmd-opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=7070</value>
+    </property>
+    <!-- Child 디버깅 옵션 -->
+    <property>
+        <name>tez.task.launch.cmd-opts</name>
+        <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=7979</value>
+    </property>
     <!--property>
         <name>tez.am.launch.cmd-opts</name>
         <value>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=7070</value>

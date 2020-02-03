@@ -28,44 +28,65 @@ ENV HDFS_SECONDARYNAMENODE_USER="root"
 ENV YARN_RESOURCEMANAGER_USER="root"
 ENV YARN_NODEMANAGER_USER="root"
 
+RUN mkdir -p ${HADOOP_ROOT} 
+
 RUN DIR=$(mktemp -d) && cd ${DIR} && \
               curl -Os http://archive.apache.org/dist/hadoop/common/hadoop-3.1.2/hadoop-${HADOOP_VER}.tar.gz && \
               tar xzvf hadoop-${HADOOP_VER}.tar.gz && \
-              mv hadoop-${HADOOP_VER} $HADOOP_HOME&& \
+              mv hadoop-${HADOOP_VER} ${HADOOP_ROOT}/&& \
               rm -rf ${DIR}
 
 RUN DIR=$(mktemp -d) && cd ${DIR} && \
               curl -Os http://mirror.navercorp.com/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz && \
               tar xzvf apache-hive-${HIVE_VER}-bin.tar.gz && \
-              mv apache-hive-${HIVE_VER}-bin $HIVE_HOME && \
+              mv apache-hive-${HIVE_VER}-bin ${HIVE_HOME} && \
               rm -rf ${DIR}
 
 RUN DIR=$(mktemp -d) && cd ${DIR} && \
               curl -Os http://mirror.navercorp.com/apache/tez/0.9.2/apache-tez-${TEZ_VER}-bin.tar.gz && \
               tar xzvf apache-tez-${TEZ_VER}-bin.tar.gz && \
-              mv apache-tez-${TEZ_VER}-bin $TEZ_HOME && \
+              mv apache-tez-${TEZ_VER}-bin ${HADOOP_ROOT}/ && \
+              ln -sf ${HADOOP_ROOT}/apache-tez-${TEZ_VER}-bin ${TEZ_HOME} && \
               rm -rf ${DIR}
-
 
 COPY ./hadoop/* ${HADOOP_HOME}/etc/hadoop/
 COPY ./hive/* ${HIVE_HOME}/conf/
 
 RUN mkdir -p /tmp/hadoop-root/dfs/name
 
-RUN /opt/hadoop/hadoop-3.1.2/bin/hdfs namenode -format
-
-RUN /opt/hadoop/hadoop-3.1.2/bin/hadoop dfs -mkdir /user/tez
-RUN /opt/hadoop/hadoop-3.1.2/bin/hadoop dfs -put $TEZ_HOME/share/tez.tar.gz /user/tez
-
-# tez
-RUN /opt/hadoop/hadoop-3.1.2/sbin/start-yarn.sh
-
 # hive
-RUN cp hive-env.sh /opt/hadoop/hive-3.1.2/conf/
-RUN cp hive-site.sh /opt/hadoop/hive-3.1.2/conf/
-RUN /opt/hadoop/hive-3.1.2/bin/schematool -initSchema -dbType derby
+COPY ./hive/* ${HIVE_HOME}/conf/
+RUN ${HIVE_HOME}/bin/schematool -initSchema -dbType derby
+
+# yarn rm scheduler addr
+EXPOSE 8030 
+# yarn rm tracker addr
+EXPOSE 8031
+# yarn rm addr
+EXPOSE 8032
+# hdfs namenode
+EXPOSE 50070
+# hdfs datanode 
+EXPOSE 50075 
+
+# for jdwp
+# tez am 
+EXPOSE 7070
+# tez task
+EXPOSE 7979
 
 # entry point list
-#ENTRYPOINT ["java"]
-#RUN /opt/hadoop/hadoop-3.1.2/sbin/start-dfs.sh
-# RUN service sshd start 
+#RUN ${HADOOP_HOME}/bin/hdfs namenode -format
+#
+#RUN ${HADOOP_HOME}/sbin/start-dfs.sh
+#RUN ${HADOOP_HOME}/bin/hadoop dfs -mkdir /user/tez
+#RUN ${HADOOP_HOME}/bin/hadoop dfs -put $TEZ_HOME/share/tez.tar.gz /user/tez
+#RUN ${HADOOP_HOME}/sbin/start-yarn.sh
+
+COPY ./start.sh ${HADOOP_ROOT}/start.sh
+COPY ./bashrc /root/.bashrc
+RUN chown root:root ${HADOOP_ROOT}/start.sh && chmod 700 ${HADOOP_ROOT}/start.sh
+
+ENTRYPOINT ["/opt/hadoop/start.sh"]
+
+#CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
