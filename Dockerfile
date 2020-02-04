@@ -58,12 +58,6 @@ RUN mkdir -p /tmp/hadoop-root/dfs/name
 COPY ./hive/* ${HIVE_HOME}/conf/
 RUN ${HIVE_HOME}/bin/schematool -initSchema -dbType derby
 
-# yarn rm scheduler addr
-EXPOSE 8030 
-# yarn rm tracker addr
-EXPOSE 8031
-# yarn rm addr
-EXPOSE 8032
 # hdfs namenode
 EXPOSE 50070
 # hdfs datanode 
