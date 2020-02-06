@@ -48,4 +48,36 @@ hive> show databases;
 OK
 default
 Time taken: 0.698 seconds, Fetched: 1 row(s)
+
+hive> create database my_db;
+OK
+Time taken: 0.659 seconds
+
+hive> use my_db;
+OK
+Time taken: 0.044 seconds
+
+hive> CREATE TABLE emp ( id INT, name STRING )
+    > ROW FORMAT DELIMITED
+    > FIELDS TERMINATED BY ','
+    > LINES TERMINATED BY '\n'
+    > STORED AS TEXTFILE;
+OK
+Time taken: 0.739 seconds
+
+Create an example file : /tmp/data.txt
+1,Skanda
+2,Bhargav
+3,Nilesh
+4,Abhi
+
+LOAD DATA LOCAL INPATH '~/tmp/data.txt' INTO TABLE my_db.emp;
+
+hive> select * from my_db.emp;
+OK
+1	Skanda
+2	Bhargav
+3	Nilesh
+4	Abhi
+
 ```
