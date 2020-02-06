@@ -51,7 +51,9 @@
 
 # The java implementation to use. By default, this environment
 # variable is REQUIRED on ALL platforms except OS X!
+#export JAVA_HOME=/opt/jdk1.8.0_202
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk.x86_64
+#export JAVA_HOME=/usr/lib/jvm/java-1.8.0
 
 # Location of Hadoop.  By default, Hadoop will attempt to determine
 # this location based upon its execution path.
@@ -126,7 +128,8 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 export TEZ_HOME=/opt/hadoop/tez-0.9.2
 export TEZ_CONF_DIR=$TEZ_HOME/conf
 export TEZ_JARS=$TEZ_HOME
-export HADOOP_CLASSPATH=${TEZ_CONF_DIR}:${TEZ_JARS}/*:${TEZ_JARS}/lib/*:${HADOOP_CLASSPATH}:${JAVA_JDBC_LIBS}:${MAPREDUCE_LIBS}
+#export HADOOP_CLASSPATH=${TEZ_CONF_DIR}:${TEZ_JARS}/*:${TEZ_JARS}/lib/*:${HADOOP_CLASSPATH}:${JAVA_JDBC_LIBS}:${MAPREDUCE_LIBS}
+export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${TEZ_CONF_DIR}:${TEZ_JARS}/*:${TEZ_JARS}/lib/*:${JAVA_JDBC_LIBS}:${MAPREDUCE_LIBS}
 
 # Should HADOOP_CLASSPATH be first in the official CLASSPATH?
 # export HADOOP_USER_CLASSPATH_FIRST="yes"
